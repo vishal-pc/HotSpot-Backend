@@ -1,0 +1,25 @@
+version: '3'
+services:
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - '6380:6379'
+  hotspot-dev-backend:
+    container_name: hotspot-dev-backend
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      target: development
+    command: 'npm run dev'
+    env_file:
+      - .env
+    ports:
+      - '${PORT:-3000}:${PORT:-3000}'
+    restart: always
+    volumes:
+      - .:/user/application
+
+volumes:
+  db:
+    driver: local
